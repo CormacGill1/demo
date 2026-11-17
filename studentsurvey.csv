@@ -1,0 +1,26 @@
+Gender,Age,Home_County,Smoker_status,Drinker_status,Alcohol_units,Looks,Intelligence,Personality,Exercising_weekly_hrs,Music_weekly_hrs,Studying_weekly_hrs,Part_time_Job,TextMessages,Fav_album,Fav_film,Car_owner,Licence,Debt_status,Rent_weekly,Number_1to10,original
+Female,18,Offaly              ,No ,Yes,7,Neutral,Agree,Strongly Agree,6,12,7,FALSE,150,.,.,Yes,have a full driving licence       ,FALSE,75,5,1
+Male,19,Galway              ,No ,No ,0,Agree,Agree,Agree,6,0,6,FALSE,5,.,.,No ,do not drive                      ,FALSE,,2,2
+Female,18,Westmeath           ,No ,Yes,4,Agree,Neutral,Strongly Agree,6,1,6,TRUE ,25,.,.,No ,have a full driving licence       ,FALSE,103,4,3
+Male,19,Longford            ,No ,No ,0,Agree,Agree,Strongly Agree,10,2,4,FALSE,100,.,.,No ,have a full driving licence       ,FALSE,115,3,4
+Male,17,Galway              ,No ,Yes,10,Agree,Agree,Strongly Agree,7,5,2,FALSE,10,.,.,No ,have a provisional driving licence,FALSE,,4,5
+Male,18,Westmeath           ,No ,Yes,12.5,Agree,Neutral,Strongly Agree,10,9,0,FALSE,25,.,.,No ,have a provisional driving licence,FALSE,0,7,6
+Female,18,Mayo                ,No ,Yes,3,Strongly Agree,Agree,Strongly Agree,1,8,3,TRUE ,75,.,.,Yes,have a full driving licence       ,FALSE,120,3,7
+Male,18,Galway              ,No ,Yes,7,Neutral,Neutral,Agree,8,2,10,TRUE ,25,.,.,No ,have a provisional driving licence,FALSE,0,8,8
+Male,35,Mayo                ,Yes,No ,0,Agree,Agree,Strongly Agree,8,1,18,FALSE,4,.,.,Yes,have a full driving licence       ,TRUE ,,8,9
+Female,23,Ireland             ,Yes,Yes,4.5,Neutral,Agree,Strongly Agree,5,5.5,5.5,TRUE ,5,.,.,Yes,have a full driving licence       ,FALSE,50,7,10
+Female,19,Clare               ,No ,Yes,2,Agree,Agree,Agree,4,6,5,FALSE,12.5,.,.,No ,have a provisional driving licence,FALSE,0,5,11
+Female,19,Ireland             ,No ,Yes,4,Neutral,Disagree,Agree,2,8,,TRUE ,6,.,.,No ,do not drive                      ,FALSE,,8,12
+Female,20,Tipperary           ,No ,No ,0,Neutral,Neutral,Agree,1,4,1,TRUE ,20,.,.,Yes,have a full driving licence       ,FALSE,110,7,13
+Female,18,Donegal             ,No ,No ,0,Agree,Neutral,Strongly Agree,1,35,4,FALSE,6,.,.,No ,have a provisional driving licence,FALSE,,2,14
+Male,18,Galway              ,No ,Yes,4,Agree,Agree,Strongly Agree,2,7,2,FALSE,50,.,.,No ,have a provisional driving licence,FALSE,0,5,15
+Female,18,Galway              ,No ,Yes,7,Neutral,Agree,Strongly Agree,0,7.5,20,TRUE ,85,.,.,No ,have a provisional driving licence,FALSE,,7,16
+Male,19,Mayo                ,No ,Yes,12.5,Agree,Neutral,Agree,5,5,10,TRUE ,30,.,.,Yes,have a full driving licence       ,FALSE,112,9,17
+Male,18,Laois               ,No ,Yes,20,Agree,Agree,Strongly Agree,1,2,2,FALSE,20,.,.,No ,do not drive                      ,FALSE,75,3,18
+Male,18,Galway              ,No ,No ,8,Strongly Agree,Strongly Agree,Strongly Agree,6,0,6,TRUE ,4,.,.,Yes,have a full driving licence       ,FALSE,,9,19
+Female,17,Mayo                ,No ,Yes,6,Agree,Agree,Strongly Agree,2,4,3,TRUE ,30,.,.,No ,do not drive                      ,FALSE,,2,20
+Male,19,Clare               ,Yes,Yes,20,Neutral,Strongly Agree,Strongly Agree,5,5,2,FALSE,70,.,.,Yes,have a full driving licence       ,FALSE,100,4,21
+Male,17,Clare               ,Yes,Yes,20,Strongly Agree,Disagree,Agree,12,2,1,FALSE,20,.,.,No ,have a provisional driving licence,TRUE ,70,9,22
+Female,18,Donegal             ,No ,Yes,5.5,Neutral,Neutral,Strongly Agree,3.5,3,3,TRUE ,3.5,.,.,No ,have a provisional driving licence,FALSE,75,7,23
+Female,28,Galway              ,Yes,No ,0,Agree,Agree,Strongly Agree,10,5,15,TRUE ,5,.,.,Yes,have a full driving licence       ,FALSE,0,2,24
+Male,19,Galway              ,Yes,Yes,40,Neutral,Agree,Strongly Agree,6,2,0.1,FALSE,9,.,.,Yes,have a full driving licence       ,TRUE ,50,7,25
