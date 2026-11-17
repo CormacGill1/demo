@@ -1,0 +1,194 @@
+---
+title: "ST311 - Report C"
+author: "Cormac Gillespie - 26252216"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval = TRUE, comment = NA,warning=F,message=F)
+
+```
+
+```{r, include=F}
+# packages
+library(dplyr)
+library(ggplot2)
+library(GGally)
+library(olsrr)   ## for variable selection procedures
+
+```
+
+## Introduction
+
+Researchers wish to study the relationship between levels of credit card debt in the adult population, i.e. credit card balance in 1000's of euro, `CCdebt`, and several other candidate explanatory variables:
+
+-   `Loans` : amount of other loan debt, annual repayments, in 1000's euro.
+-   `Age` : age of account holder
+-   `YrsEmployed` : number of years in current employment
+-   `Income` : annual net income, in 1000's euro.
+-   `Subscriptions` : amount spent on entertainment subscriptions per month e.g. streaming services.
+-   `JobStatus` : permanent job, one of *Perm* or *NonPerm*.
+-   `Education` : highest education level attained, one of *School* or *Degree*.
+
+These variables are recorded for a sample of account holders. For this report, we are interested in the following research questions:
+
+
+1. Determine the parsimonious linear regression  model using the  seven candidate predictors.
+
+2. Use model diagnostic techniques to determine a) the predictive role of the variables Loans and YrsEmployed and b) the relationship of predictor Subscriptions with credit card debt. 
+
+3.  For models fitted in this report, use the estimated relationship to find the fitted value of credit card debt for an account holder aged 25 with a degree, in a permanent job of 4 years current employment with annual net income 45,000 euro with 6,000 euro of other loan debt, and spends 20 euro on entertainment subscriptions per month. Include a prediction interval for credit card debt providing an interpretation  referencing the application.
+
+
+
+
+\newpage
+
+
+##  Analysis
+
+```{r, echo=F}
+ 
+CCdebtData<-read.csv("CCdebtData.csv", stringsAsFactors = T)
+CCdebtData$Education<-relevel(CCdebtData$Education,ref="School") 
+CCdebtData$JobStatus<-relevel(CCdebtData$JobStatus,ref="NonPerm") 
+
+
+```
+
+### Research question 1 - determining the parsimonious model
+
+To determine which variables are in the parsimonious model for credit card debt, a best subsets routine is fitted, with all  of the seven variables as  candidate predictors, to the sample data giving the following output:
+
+```{r}
+models<-ols_step_best_subset(lm(CCdebt~. ,data=CCdebtData))
+models
+```
+
+```{r}
+plot(models)
+
+```
+
+The following prints values of variable selection criteria for the models focusing on values of the coefficient of determination, R-square, values of adjusted R-square, values of Mallow's Cp and values of AIC.
+
+```{r}
+data.frame(models[1]$metrics)%>%select(predictors, rsquare,adjr,cp,aic)
+
+```
+
+
+
+
+A parsimonious model is one in which the the number of explanatory variables is kept to a minimum, while explaining an adequate amount of the variability in the response variable. I think model 5 (Loans,Education, Income, YrsEmployed,Subscriptions) is the parsimonious model for CCdebt.This model has the highest adjusted R (0.8755) squared while almost having the highest R squared.A larger value of R squared implies more of the variability in the response is being explained by that model.Adjusted R squared penalises adding unneccessary variables to the model as adding extra variables to the model will always increase the R squared even if the variable itself is only noise.
+Mallow’s Cp should be less than or equal to the number of parameters in the model equation which is satisfied by model 5 (Mallow's CP of 4.4). Model 5 is the only model that satisfies this.
+Model 5 also had the lowest AIC score of 190.474 with a lower AIC score the better.
+
+
+
+```{r}
+
+fit1<-lm(CCdebt~ Loans + Education + Income + YrsEmployed + Subscriptions, CCdebtData)
+summary(fit1)
+```
+
+
+```{r}
+
+
+new_data <- data.frame(
+  Loans        = 6,
+  Education    = "Degree",
+  Income       = 45,
+  YrsEmployed  = 4,
+  Subscriptions = 20
+)
+ 
+
+predict(fit1, newdata = new_data, interval = "prediction", level = 0.95)   
+
+
+```
+The predicted value for debt of a person given these values is 3.79k euro of debt and we can say with 95% confidence that a new person with these characteristics will have CCdebt between 0.46k and 7.12k.
+
+
+
+\newpage
+
+### Research question 2a
+
+The plot and output below are produced to assess a model where Loans and YrsEmployed are used to predict CCdebt,
+
+$$CCdebt_i=\beta_0+\beta_1Loans_i+\beta_2YrsEmployed_i+\epsilon_i.$$
+
+```{r,echo=F,out.width="50%"}
+ggpairs(CCdebtData%>%select(CCdebt,Loans,YrsEmployed))
+fit<-lm(CCdebt~Loans+YrsEmployed,CCdebtData)
+summary(fit)
+
+```
+
+
+
+The observed correlation coefficients in the output indicate that Loans is highly correlated with CCdebt(correlation score of 0.770) and very highly correlated with YrsEmployed (0.992). YrsEmployed is highly correlated with CCdebt (0.758).
+
+The ANOVA F-test indicates that at least one of the predictors is useful as the p value is tiny (1.47e-10)
+
+The t-test for the coefficient of variable Loans indicates that Loans is not statistically significant at the 5% level after accounting for YrsEmployed. (0.1165 > 0.05)
+
+The t-test for the coefficient of variable YrsEmployed indicates that YrsEmployed has no effect on CCdebt, given Loans is in the model (0.5977 > 0.05).
+
+From this I would guess the two variables are highly correlated with each other causing multicollinearity problems. I would check using VIF score and then possibly either remove the weaker term from the model or make some kind of interaction term.
+
+\newpage
+
+### Research question 2b
+
+
+The output and diagnostic plots provided below show the results of a simple linear regression fit for the predictor Subscriptions on the response CCdebt,
+$$CCdebt_i=\beta_0+\beta_1Subscriptions_i+\epsilon_i.$$
+
+```{r,fig.show='hold'}
+model1<-lm(CCdebt~Subscriptions,CCdebtData)
+summary(model1)
+plot(model1,1)
+plot(model1,2)
+```
+The residuals versus fitted plot should show a random scatter around zero with no clear pattern. The spread of the errors should be constant. This plot looks to mostly satisfy this.
+
+The QQ plot should show all the points close to the diagonal showing that the residuals are normal. There are some points that deviate at both tails indicating some possible outliers.
+
+
+
+
+
+
+The output below, summarises the fit of a model where the natural log transformation has been applied to the response variable CCdebt, i.e.
+$$ln(CCdebt)_i=\beta_0+\beta_1Subscriptions_i+\epsilon_i.$$
+
+```{r}
+
+model2<-lm(log(CCdebt)~Subscriptions,CCdebtData)
+summary(model2)
+```
+
+```{r}
+
+new_data <- data.frame(Subscriptions = 20)
+
+
+predictionlog <- predict(model2, newdata = new_data, interval = "prediction", level = 0.95)
+predictionlog
+
+exp(predictionlog)   
+
+```
+
+The predicted value for debt of a person given a subscription value of 20 is 3.97k euro of debt and we can say with 95% confidence that a new person with these characteristics will have CCdebt between 0.8k and 19.67k.
+
+
+
+
+
