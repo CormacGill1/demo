@@ -8,6 +8,9 @@
 #
 
 library(shiny)
+library(tidyverse)
+DIG <- read.csv("DIG.csv")
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
