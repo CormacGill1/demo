@@ -51,6 +51,14 @@ ui <- fluidPage(
         # Show a plot of the generated distribution
         mainPanel(
            plotOutput("distPlot")
+        ),
+        sliderInput(inputId = "BMI",
+                    label = "BMI",
+                    min = min(dig$BMI),
+                    max = max(dig$BMI),
+                    value = c(min(dig$BMI),max(dig$BMI)),
+                    sep = ""
+          
         )
     )
 )
