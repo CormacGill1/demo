@@ -57,7 +57,8 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-           plotOutput("distPlot")
+           plotOutput("distPlot"),
+           plotOutput("SysBPvsCVD") # a second plot
         )
     )
 )
@@ -76,11 +77,22 @@ server <- function(input, output) {
         bins <- seq(min(x), max(x), length.out = input$bins + 1)
 
         # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'Black', border = 'white',
+        hist(x, breaks = bins, col = 'Purple', border = 'white',
              xlab = 'Age',
-             main = 'Histogram of Age')
+             main = 'Histogram of Patient Age')
     })
+    
+    output$SysBPvsCVD <- renderPlot({
+      ggplot(dig, aes(x = CVD, y = SYSBP))+
+        geom_boxplot(colour = "purple")
+    })
+    
+    
+    
 }
+
+
+
 
 # Run the application 
 shinyApp(ui = ui, server = server)
