@@ -33,10 +33,10 @@ dig <-dig %>%
 
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
+ui <- navbarPage("DIG Data",
 
     # Application title
-    titlePanel("DIG Data"),
+    tabPanel("Tab 1",
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
@@ -57,13 +57,16 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-           plotOutput("distPlot"),
-           plotOutput("SysBPvsCVD") # a second plot
+          plotOutput("distPlot")
         )
     )
+),
+#second tab
+tabPanel("Tab 2",
+         mainPanel(plotOutput("SysBPvsCVD"))
+  
 )
-
-
+)
 
 
 
