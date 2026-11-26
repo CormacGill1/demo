@@ -45,23 +45,23 @@ ui <- fluidPage(
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
+            sliderInput(inputId = "BMI",
+                        label = "BMI",
+                        min = min(dig$BMI, na.rm = TRUE),
+                        max = max(dig$BMI, na.rm = TRUE),
+                        value = c(min(dig$BMI, na.rm = TRUE),max(dig$BMI, na.rm = TRUE)),
+                        sep = "")
+                        
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
            plotOutput("distPlot")
-        ),
-        sliderInput(inputId = "BMI",
-                    label = "BMI",
-                    min = min(dig$BMI),
-                    max = max(dig$BMI),
-                    value = c(min(dig$BMI),max(dig$BMI)),
-                    sep = ""
-          
         )
     )
 )
+
 
 
 
@@ -72,7 +72,7 @@ server <- function(input, output) {
 
     output$distPlot <- renderPlot({
         # generate bins based on input$bins from ui.R
-        x    <- DIG[, 3]
+        x    <- dig$AGE
         bins <- seq(min(x), max(x), length.out = input$bins + 1)
 
         # draw the histogram with the specified number of bins
