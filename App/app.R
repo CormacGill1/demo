@@ -78,7 +78,9 @@ tabPanel("Tab 2",
 ),
 
 #summary statistics tab
-tabPanel("Summary Statistics"
+tabPanel("Summary Statistics",
+         selectInput("summary_var", "Select Variable:", choices = names(dig)), 
+         DTOutput("SummaryStatsTable")
   
 )
 
@@ -121,6 +123,13 @@ server <- function(input, output) {
       ))
       
       
+    })
+    
+    output$SummaryStatsTable <- renderDT({
+      selected_var <- input$summary_var
+      summary_data <- summary(dig[[selected_var]])
+      summary_df <- data.frame(Statistic = names(summary_data), Value = as.numeric(summary_data))
+      datatable(summary_df, options = list(pageLength = 5))
     })
     
     
