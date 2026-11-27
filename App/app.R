@@ -9,7 +9,7 @@
 
 library(shiny)
 library(tidyverse)
-
+library(DT)
 # I only selected the variables from our previous assignment but we can change this to include all the others maybe
 # just picking these for now
 dig <- read.csv("DIG.csv") %>%
@@ -39,7 +39,16 @@ dig <-dig %>%
 
 # UI
 ui <- navbarPage("DIG Data",
-                 tabPanel("Tab 3",
+                 
+                 tabPanel("Data Info Tab",
+                          sidebarLayout(
+                            sidebarPanel(
+                              p("This app can be used to explore the DIG dataset")
+                            ),
+                            mainPanel(
+                              DT :: dataTableOutput("dataDisplay")
+                            )
+                          )
                  ),
                  
 
@@ -53,14 +62,7 @@ ui <- navbarPage("DIG Data",
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30),
-            sliderInput(inputId = "BMI",
-                        label = "BMI",
-                        min = min(dig$BMI, na.rm = TRUE),
-                        max = max(dig$BMI, na.rm = TRUE),
-                        value = c(min(dig$BMI, na.rm = TRUE),max(dig$BMI, na.rm = TRUE)),
-                        sep = "")
-                        
+                        value = 30)
         ),
 
         # Show a plot of the generated distribution
@@ -72,6 +74,11 @@ ui <- navbarPage("DIG Data",
 #second tab
 tabPanel("Tab 2",
          mainPanel(plotOutput("SysBPvsCVD"))
+  
+),
+
+#summary statistics tab
+tabPanel("Summary Statistics"
   
 )
 
@@ -99,6 +106,21 @@ server <- function(input, output) {
     output$SysBPvsCVD <- renderPlot({
       ggplot(dig, aes(x = CVD, y = SYSBP))+
         geom_boxplot(colour = "purple")
+    })
+    
+    
+    
+    output$dataDisplay <- DT :: renderDataTable({
+      datatable(
+        dig,
+        options = list(
+          pageLength = 5,      # Set rows per page
+          autoWidth = TRUE,    # Auto-adjust column widths
+          searching = TRUE,    # Enable data filtering
+          ordering = TRUE    # Enable column sorting,
+      ))
+      
+      
     })
     
     
