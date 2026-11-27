@@ -1,11 +1,4 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    https://shiny.posit.co/
-#
+
 
 library(shiny)
 library(tidyverse)
@@ -43,7 +36,7 @@ ui <- navbarPage("DIG Data",
                  tabPanel("Data Info Tab",
                           sidebarLayout(
                             sidebarPanel(
-                              p("This app can be used to explore the DIG dataset")
+                              p("This app can be used to explore the DIG dataset. The DIG dataset contains data...")
                             ),
                             mainPanel(
                               DT :: dataTableOutput("dataDisplay")
@@ -51,9 +44,17 @@ ui <- navbarPage("DIG Data",
                           )
                  ),
                  
+                 #summary statistics tab
+                 tabPanel("Summary Statistics",
+                          selectInput("summary_var", "Select Variable:", choices = names(dig)),
+                          DTOutput("SummaryStatsTable")
+                          
+                 ),
+                 
+                 
 
     # Application title
-    tabPanel("Tab 1",
+    tabPanel("Variable Distributions",
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
@@ -62,7 +63,10 @@ ui <- navbarPage("DIG Data",
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
+            selectInput("HistogramVariable", "Variable:",
+                        choices = names(dig)[sapply(dig, is.numeric)])
+            
         ),
 
         # Show a plot of the generated distribution
@@ -71,16 +75,14 @@ ui <- navbarPage("DIG Data",
         )
     )
 ),
-#second tab
-tabPanel("Tab 2",
-         mainPanel(plotOutput("SysBPvsCVD"))
-  
-),
 
-#summary statistics tab
-tabPanel("Summary Statistics",
-         selectInput("summary_var", "Select Variable:", choices = names(dig)), 
-         DTOutput("SummaryStatsTable")
+
+
+
+
+#second tab
+tabPanel("Box Plot",
+         mainPanel(plotOutput("SysBPvsCVD"))
   
 )
 
@@ -95,14 +97,14 @@ tabPanel("Summary Statistics",
 server <- function(input, output) {
 
     output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- dig$AGE
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+      req(input$HistogramVariable)
+        x    <- dig[[input$HistogramVariable]]
+        bins <- seq(min(x, na.rm = TRUE), max(x, na.rm = TRUE), length.out = input$bins + 1)
 
         # draw the histogram with the specified number of bins
         hist(x, breaks = bins, col = 'Purple', border = 'white',
-             xlab = 'Age',
-             main = 'Histogram of Patient Age')
+             xlab = input$HistogramVariable,
+             main = 'Histogram of Chosen Variable')
     })
     
     output$SysBPvsCVD <- renderPlot({
@@ -131,7 +133,6 @@ server <- function(input, output) {
       summary_df <- data.frame(Statistic = names(summary_data), Value = as.numeric(summary_data))
       datatable(summary_df, options = list(pageLength = 5))
     })
-    
     
     
 }
