@@ -32,8 +32,16 @@ dig <-dig %>%
 
 
 
-# Define UI for application that draws a histogram
+
+
+
+
+
+# UI
 ui <- navbarPage("DIG Data",
+                 tabPanel("Tab 3",
+                 ),
+                 
 
     # Application title
     tabPanel("Tab 1",
@@ -66,12 +74,15 @@ tabPanel("Tab 2",
          mainPanel(plotOutput("SysBPvsCVD"))
   
 )
+
+
+
 )
 
 
 
 
-# Define server logic required to draw a histogram
+# Server
 server <- function(input, output) {
 
     output$distPlot <- renderPlot({
@@ -93,6 +104,15 @@ server <- function(input, output) {
     
     
 }
+
+
+
+
+
+
+
+
+
 
 
 
