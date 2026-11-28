@@ -79,17 +79,25 @@ ui <- navbarPage("DIG Data",
 
 
 
-
-#second tab
 tabPanel("Box Plot",
-         mainPanel(plotOutput("SysBPvsCVD"))
+
+sidebarLayout(
+  sidebarPanel(
+    selectInput("Y_Variable", "Y Variable:",
+                choices = names(dig)[sapply(dig, is.numeric)]),
+    selectInput("X_Variable", "X Variable:",
+                choices = names(dig)[sapply(dig, is.factor)])
+    
+  ),
   
+  # Show a plot of the generated distribution
+  mainPanel(
+    plotOutput("BoxPlot")
+  )
 )
 
-
-
 )
-
+)
 
 
 
@@ -107,9 +115,10 @@ server <- function(input, output) {
              main = 'Histogram of Chosen Variable')
     })
     
-    output$SysBPvsCVD <- renderPlot({
-      ggplot(dig, aes(x = CVD, y = SYSBP))+
-        geom_boxplot(colour = "purple")
+    output$BoxPlot <- renderPlot({
+      req(input$X_Variable, input$Y_Variable)
+      ggplot(dig, aes(x = .data[[input$X_Variable]], y = .data[[input$Y_Variable]]))+
+        geom_boxplot(colour = "purple", na.rm = TRUE, title(main = "Box Plot of chosen variables"))
     })
     
     
